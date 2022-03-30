@@ -1,5 +1,6 @@
 ##### SModel analyses and figure generation 
 ##### 2021-09-27
+##### revision updates 2022-03-28
 
 rm(list=ls())
 library(deSolve)
@@ -17,7 +18,7 @@ d10=output[output$Z==10,]
 colors100=wes_palette('Zissou1', 100, type =  "continuous")
 ilimcol=colors100[floor(99*d10$lightlim)+1]
 
-plot(d10$TP,d10$chl, xlab=expression("TP (ug"~'L'^-1*')'), ylab=expression("algal biomass (ug chl"~'L'^-1*')'), xlim=c(0,500), ylim=c(0,200),type="p",pch=16,col=ilimcol)
+plot(d10$TP,d10$chl, xlab=expression("TP (ug"~'L'^-1*')'), ylab=expression("chlorophyll (ug "~'L'^-1*')'), xlim=c(0,500), ylim=c(0,200),type="p",pch=16,col=ilimcol)
 
 # make a key for colors
 image(1, seq(0.01,1,0.01), t(seq_along(seq(0.01,1,0.01))), col=colors100, axes=FALSE, xlab = '', ylab='', main="light limitation", cex.main=0.9)
@@ -27,7 +28,7 @@ axis(4)
 #2b) fraction TP as SRP colored
 srp2tpcol=wes_palette('Zissou1', 100, type =  "continuous")[floor(99*d10$fracSRP)+1]
 
-plot(d10$TP,d10$chl, xlab=expression("TP (ug"~'L'^-1*')'), ylab=expression("algal biomass (ug chl"~'L'^-1*')'), xlim=c(0,500), ylim=c(0,200),col=srp2tpcol,type="p",pch=16)
+plot(d10$TP,d10$chl, xlab=expression("TP (ug"~'L'^-1*')'), ylab=expression("chlorophyll (ug "~'L'^-1*')'), xlim=c(0,500), ylim=c(0,200),col=srp2tpcol,type="p",pch=16)
 
 # make a key for colors
 image(1, seq(0.01,1,0.01), t(seq_along(seq(0.01,1,0.01))), col=colors100, axes=FALSE, xlab = '', ylab='', main="fraction TP as SRP", cex.main=0.9)
@@ -42,7 +43,7 @@ pinColors=rep(colors33[1],length(output$Pin))
 for(i in 2:length(uniqueColors33)){
   pinColors[output$Pin==uniqueColors33[i]]=colors33[i]
 }
-plot(output$TP,output$chl, xlab=expression("TP (ug"~'L'^-1*')'), ylab=expression("algal biomass (ug chl"~'L'^-1*')'), xlim=c(0,500), ylim=c(0,200),col=pinColors,type="p",pch=16)
+plot(output$TP,output$chl, xlab=expression("TP (ug"~'L'^-1*')'), ylab=expression("chlorophyll (ug "~'L'^-1*')'), xlim=c(0,500), ylim=c(0,200),col=pinColors,type="p",pch=16)
 
 # key for colors
 image(1, unique(output$Pin)*1000, t(seq_along(unique(output$Pin))), col=colors33, axes=FALSE, xlab = '', ylab='', main=expression("Pin\n(ug"~'L'^-1*')'), cex.main=0.9,log="y")
@@ -55,7 +56,7 @@ hrtColors=rep(colors100[1],length(output$HRT))
 for(i in 2:length(uniqueColors100)){
   hrtColors[output$HRT==uniqueColors100[i]]=colors100[i]
 }
-plot(output$TP,output$chl, xlab=expression("TP (ug"~'L'^-1*')'), ylab=expression("algal biomass (ug chl"~'L'^-1*')'), xlim=c(0,500), ylim=c(0,200),col=hrtColors,type="p",pch=16)
+plot(output$TP,output$chl, xlab=expression("TP (ug"~'L'^-1*')'), ylab=expression("chlorophyll (ug "~'L'^-1*')'), xlim=c(0,500), ylim=c(0,200),col=hrtColors,type="p",pch=16)
 
 # key for colors
 image(1, unique(output$HRT), t(seq_along(unique(output$HRT))), col=colors100, axes=FALSE, xlab = '', ylab='', main="HRT (days)", cex.main=0.9,log="y")
@@ -67,12 +68,12 @@ depthColors=rep(colors4[1],length(output$TP))
 depthColors[output$Z==5]=colors4[2]
 depthColors[output$Z==10]=colors4[3]
 depthColors[output$Z==20]=colors4[4]
-plot(output$TP,output$chl, xlab=expression("TP (ug"~'L'^-1*')'), ylab=expression("algal biomass (ug chl"~'L'^-1*')'), xlim=c(0,500), ylim=c(0,200),col=depthColors,type="p",pch=16)
+plot(output$TP,output$chl, xlab=expression("TP (ug"~'L'^-1*')'), ylab=expression("chlorophyll (ug "~'L'^-1*')'), xlim=c(0,500), ylim=c(0,200),col=depthColors,type="p",pch=16)
 legend('topleft',paste("Z=",unique(output$Z),sep=""),pch=16,col=colors4,box.lty=0)
 
 #3d) light limitation
 ilimcol2=wes_palette('Zissou1', 100, type =  "continuous")[floor(99*output$lightlim)+1]
-plot(output$TP,output$chl, xlab=expression("TP (ug"~'L'^-1*')'), ylab=expression("algal biomass (ug chl"~'L'^-1*')'), xlim=c(0,500), ylim=c(0,200),col=ilimcol2,type="p",pch=16)
+plot(output$TP,output$chl, xlab=expression("TP (ug"~'L'^-1*')'), ylab=expression("chlorophyll (ug "~'L'^-1*')'), xlim=c(0,500), ylim=c(0,200),col=ilimcol2,type="p",pch=16)
 
 # key for colors
 image(1, seq(0.01,1,0.01), t(seq_along(seq(0.01,1,0.01))), col=colors100, axes=FALSE, xlab = '', ylab='', main="light limitation", cex.main=0.9)
@@ -85,33 +86,36 @@ colors3=wes_palette('Zissou1', 3, type =  "continuous")
 cpColors=rep(colors3[1],length(cpOut$TP))
 cpColors[3301:6600]=colors3[2]
 cpColors[6601:9900]=colors3[3]
-plot(cpOut$TP,cpOut$chl, xlab=expression("TP (ug"~'L'^-1*')'), ylab=expression("algal biomass (ug chl"~'L'^-1*')'), xlim=c(0,500), ylim=c(0,200),type="p",pch=16,col=cpColors)
+plot(cpOut$TP,cpOut$chl, xlab=expression("TP (ug"~'L'^-1*')'), ylab=expression("chlorophyll (ug "~'L'^-1*')'), xlim=c(0,500), ylim=c(0,200),type="p",pch=16,col=cpColors)
 legend('topleft',paste("cp=",c(0.005,0.015,0.025),sep=""),pch=16,col=colors3,box.lty=0)
 
 maColors=rep(colors3[1],length(maOut$TP))
 maColors[3301:6600]=colors3[2]
 maColors[6601:9900]=colors3[3]
-plot(maOut$TP,maOut$chl, xlab=expression("TP (ug"~'L'^-1*')'), ylab=expression("algal biomass (ug chl"~'L'^-1*')'), xlim=c(0,500), ylim=c(0,200),type="p",pch=16,col=maColors)
+plot(maOut$TP,maOut$chl, xlab=expression("TP (ug"~'L'^-1*')'), ylab=expression("chlorophyll (ug "~'L'^-1*')'), xlim=c(0,500), ylim=c(0,200),type="p",pch=16,col=maColors)
 legend('topleft',paste("ma=",c(0.002,0.003,0.005),sep=""),pch=16,col=colors3,box.lty=0)
 
 haColors=rep(colors3[1],length(haOut$TP))
 haColors[3301:6600]=colors3[2]
 haColors[6601:9900]=colors3[3]
-plot(haOut$TP,haOut$chl, xlab=expression("TP (ug"~'L'^-1*')'), ylab=expression("algal biomass (ug chl"~'L'^-1*')'), xlim=c(0,500), ylim=c(0,200),type="p",pch=16,col=haColors)
+plot(haOut$TP,haOut$chl, xlab=expression("TP (ug"~'L'^-1*')'), ylab=expression("chlorophyll (ug "~'L'^-1*')'), xlim=c(0,500), ylim=c(0,200),type="p",pch=16,col=haColors)
 legend('topleft',paste("ha=",c(36,80,100),sep=""),pch=16,col=colors3,box.lty=0)
 
 
-##### Generating Figure 5
-plot(nla2$tp,nla2$chl, xlab=expression("TP (ug"~'L'^-1*')'), ylab=expression("algal biomass (ug chl"~'L'^-1*')'), xlim=c(0,500), ylim=c(0,250),type="p",pch=16)
-points(NLAsim_output$TP,NLAsim_output$chl,pch=21,col='grey')
-legend('topleft',c('observed','modeled'),pch=c(16,21),col=c('black','grey'),box.lty=0)
+##### Generating Figure 5  
 
-###removing simulations with unrealistically low chlorophyll
-keep=NLAsim_output.d[NLAsim_output.d$chl >= 0.167,]
+plot(log10(nla$TP),log10(nla$chla), xlab=expression("log10 TP (ug"~'L'^-1*')'), ylab=expression("log10 chlorophyll (ug "~'L'^-1*')'), xlim=c(0,3), ylim=c(-1,2.5),type="p",pch=21,col=colors3[1])
+points(log10(NLAsim_output$TP),log10(NLAsim_output$chl),pch=21,col=colors3[2])
+legend('topleft',c('observed','model'),pch=21,col=c(colors3[1:2]),box.lty=0)
 
-plot(nla2$tp,nla2$chl, xlab=expression("TP (ug"~'L'^-1*')'), ylab=expression("algal biomass (ug chl"~'L'^-1*')'), xlim=c(0,500), ylim=c(0,250),type="p",pch=16)
-points(keep$TP,keep$chl,pch=21,col='grey')
-legend('topleft',c('observed','modeled'),pch=c(16,21),col=c('black','grey'),box.lty=0)
+plot(log10(nla$TP),log10(nla$chla), xlab=expression("log10 TP (ug"~'L'^-1*')'), ylab=expression("log10 chlorophyll (ug "~'L'^-1*') w/ grazing'), xlim=c(0,3), ylim=c(-1,2.5),type="p",pch=21,col=colors3[1])
+points(log10(NLAsim_output.gf$TP),log10(NLAsim_output.gf$chl),pch=21,col=colors3[2])
+
+plot(log10(nla$TP),log10(nla$chla), xlab=expression("log10 TP (ug"~'L'^-1*')'), ylab=expression("log10 chlorophyll (ug "~'L'^-1*') w/ DOC'), xlim=c(0,3), ylim=c(-1,2.5),type="p",pch=21,col=colors3[1])
+points(log10(NLAsim_output.d$TP),log10(NLAsim_output.d$chl),pch=21,col=colors3[2])
+
+plot(log10(nla$TP),log10(nla$chla), xlab=expression("log10 TP (ug"~'L'^-1*')'), ylab=expression("log10 chlorophyll (ug "~'L'^-1*') w/ DOC & grazing'), xlim=c(0,3), ylim=c(-1,2.5),type="p",pch=21,col=colors3[1])
+points(log10(NLAsim_output.dgf$TP),log10(NLAsim_output.dgf$chl),pch=21,col=colors3[2])
 
 
 ##### Generating Figure S2
@@ -143,7 +147,33 @@ abline(0,1, lwd=3)
 abline(VfitOPT, untf=F, col='red',lwd=3)
 
 
+##### checking for sims reaching equilibrium
+slopes=numeric(ncol(equil))
+for(i in 1:length(slopes)){slopes[i]=(equil[nrow(equil),i]-equil[1,i])/nrow(equil)}
+sum(!is.finite(slopes))
+means=colMeans(equil)
+scaledSlopes=slopes/means
+hist(log10(abs(scaledSlopes*100)),xlab="% change",main="",breaks=seq(0,7e-4,1e-5))
+sum(scaledSlopes<1e-3,na.rm=TRUE)
 
+# what sims failed
+z=which(!is.finite(slopes))
+probs=output[z,]
+sort(unique(probs$Qin))
+range(output$Qin)
+sort(unique(probs$HRT))
+range(output$HRT)
+sort(unique(probs$Pin))
+range(output$Pin)
+sort(unique(probs$Z))
+range(output$Z)
+
+##### Generating FIgure S3 - internal loading
+iloadAcol2=wes_palette('Zissou1', 100, type =  "continuous")[floor(output$iLoadA/max(output$iLoadA,na.rm=TRUE)*99)+1]
+plot(output$TP,output$chl, xlab=expression("TP (ug"~'L'^-1*')'), ylab=expression("chlorophyll (ug "~'L'^-1*')'), xlim=c(0,500), ylim=c(0,200),col=iloadAcol2,type="p",pch=16)
+
+image(1, seq(0,max(output$iLoadA,na.rm=TRUE),length.out=100), t(seq_along(seq(0,max(output$iLoadA,na.rm=TRUE),length.out=100))), col=colors100, axes=FALSE, xlab = '', ylab='', main="iloadA", cex.main=0.9)
+axis(4)
 
 
 ##########################################
@@ -209,10 +239,20 @@ Model<-function(t, y, parms) {
   # calculating nutrient limitation
   NutLim=1-((P/V)/((P/V)+ma))
   
+  ##calculating internal loading (g day-1)
+  iLoad=ap*S
+  
+  ##calculating internal loading with units similar to literature (mg m-2 day-1)
+  iLoadA=(ap*S)*1000/Al
+  
+  ##calculate external loading (g day-1)
+  eLoad=Qin*Pin
+  
+  
   # vector of deltas
   dY=c(dC=dC, dA=dA, dP=dP, dS=dS)
   
-  return(list(dY, APhos, V, LightLim, NutLim, u))
+  return(list(dY, APhos, V, LightLim, NutLim, u, iLoad, iLoadA, eLoad))
 }
 
 ##### Run simulations to equilibrium and store the output across Pin, HRT, and depth gradients
@@ -223,9 +263,11 @@ SAs=rep(1e7,13200)
 Qins=Zs*SAs/HRTs
 
 x0=c(0, 0.005*10000*2, 0.005*10000*2, 1)
-times=1:1000
+times=1:10000
 
-output=data.frame(Qin=Qins,Pin=Pins,Z=Zs,SA=SAs,HRT=HRTs,TP=NA,biomass=NA,SRP=NA,lightlim=NA,plim=NA,u=NA)
+output=data.frame(Qin=Qins,Pin=Pins,Z=Zs,SA=SAs,HRT=HRTs,TP=NA,biomass=NA,SRP=NA,lightlim=NA,plim=NA,u=NA,iLoad=NA,iLoadA=NA,eLoad=NA)
+
+equil=matrix(NA, 1000, length(Pins),)
 
 for(i in 1:length(Qins)){
   print(i)
@@ -240,10 +282,16 @@ for(i in 1:length(Qins)){
   output$lightlim[i]=out[nrow(out),8]
   output$plim[i]=out[nrow(out),9]
   output$u[i]=out[nrow(out),10]
+  output$iLoad[i]=out[nrow(out),11]
+  output$iLoadA[i]=out[nrow(out),12]
+  output$eLoad[i]=out[nrow(out),13]
+  
+  equil[,i]=out[9001:10000,5]
 }
 
 output$chl=output$biomass/60*1000  # mg chl m-3
 output$fracSRP=output$SRP/output$TP
+
 
 
 ##### trait sensitivity simulations
@@ -254,7 +302,7 @@ traitSAs=rep(1e7,3300)
 traitQins=traitZs*traitSAs/traitHRTs
 
 x0=c(0, 0.005*10000*2, 0.005*10000*2, 1)
-times=1:1000
+times=1:10000
 
 trait_output=data.frame(Qin=rep(traitQins,9),
                         Pin=rep(traitPins,9),
@@ -294,34 +342,125 @@ haOut=trait_output[19801:29700,]
 
 
 ##### NLA qualitative comparison
-nla=read.csv('nla12_keyvariables_data.csv', sep = ',', header = TRUE, stringsAsFactors = FALSE)
+##### model definition + GRAZING w/ 90% P recycled
+ModelG<-function(t, y, parms) {
+  # define state variables at time step
+  C=y[1]
+  A=y[2]
+  P=y[3]
+  S=y[4]
+  
+  # define parameters from arguments
+  kbg=parms[1]
+  kc=parms[2]
+  ka=parms[3]
+  I0=parms[4]
+  zmax=parms[5]
+  Cin=parms[6]
+  d=parms[7]
+  pa=parms[8]
+  ha=parms[9]
+  ma=parms[10]
+  la=parms[11]
+  r=parms[12]
+  Pin=parms[13]
+  apmax=parms[14]
+  b=parms[15]
+  Al=parms[16]
+  zsed=parms[17]
+  Qin=parms[18]
+  a=parms[19]
+  c=parms[20]
+  Cp=parms[21]
+  g=parms[22]
+  
+  # intermediate equations
+  V=Al*zmax ##m3
+  Qout=Qin
+  Vsed=Al*zsed ##m3
+  kd=kbg + (kc*(C/V)) + (ka*(A/V)) ##1/m 
+  Izmax=I0*exp(-kd*zmax) ##uE
+  Pgrad=((S/Vsed)-(P/V)) ##concentration gradient between sediments and phosphorus
+  ap=apmax*((exp(a + c*Pgrad)) / (1 + exp(a + c*Pgrad)))
+  u=(pa/(kd*zmax))*log((ha+I0)/(ha+Izmax))*((P/V)/((P/V)+ma))
+  
+  # differential equations
+  dC=(Qin*Cin) - ((C/V)*Qout) - d*C  # g C day-1
+  dA=(u - la - (r/zmax) - (Qout/V))*A - g*A   # g C day-1
+  dP=(Qin*Pin) - ((P/V)*Qout) - (u*A*Cp) + (la*A*Cp) + ap*S + g*A*Cp*0.9   # g P  day-1
+  dS=(r/zmax)*A*Cp - ap*S - b*S  # mg P day-1
+  
+  # calculate pools, fluxes, etc to store for each time step
+  #A in terms of P
+  APhos=A*Cp
+  
+  # calculating light limitation
+  LightLim=1-(1/(kd*zmax))*log((ha+I0)/(ha+Izmax))
+  
+  # calculating nutrient limitation
+  NutLim=1-((P/V)/((P/V)+ma))
+  
+  ##calculating internal loading (g day-1)
+  iLoad=ap*S
+  
+  ##calculating internal loading with units similar to literature (mg m-2 day-1)
+  iLoadA=(ap*S)*1000/Al
+  
+  ##calculate external loading (g day-1)
+  eLoad=Qin*Pin
+  
+  
+  # vector of deltas
+  dY=c(dC=dC, dA=dA, dP=dP, dS=dS)
+  
+  return(list(dY, APhos, V, LightLim, NutLim, u, iLoad, iLoadA, eLoad))
+}
 
-chl=aggregate(nla$CHLX_RESULT, by = list(nla$SITE_ID), FUN=mean,na.rm=TRUE)
-tp=aggregate(nla$PTL_RESULT, by = list(nla$SITE_ID), FUN=mean,na.rm=TRUE)
-
-nla=merge(chl, tp, by = 'Group.1', all=T)
-colnames(nla)=c('site', 'chl', 'tp')
+##### NLA qualitative comparison
+nla=read.csv('nla2012aggregated_2022-03-29.csv', header = TRUE, stringsAsFactors = FALSE)
 
 # remove sites with NA for chl
-nla=nla[!is.na(nla$chl),]
+nla=nla[!is.na(nla$chla),]
+nla=nla[!is.na(nla$depth),]
 
 # removing values outside of simulation range
-nla2=nla[nla$tp <= 500,]
+nla=nla[nla$TP <= 500,]
+nla=nla[nla$depth <= 20,]
 
-# removing a single algal biomass outlier
-nla2=nla2[nla2$chl < 333,]
 
 # setting up model run
 x0=c(0, 0.005*10000*2, 0.005*10000*2, 1)
 times=1:1000
 
-N=1000
-set.seed(N)
+### use NLA lake surface areas and depths in triplicate for better coverage because of random combinatiions of HRT, Pin, and DOC
+SAs=rep(nla$area,1)
+Zs=rep(nla$depth,1)
 
-Qins=runif(N,min=1e3,max=4e6)  #m3 day-1
-Pins=runif(N,min=0.01,max=0.5) # g m-3
-Zs=runif(N,min=2,max=30)       # m
-SAs=runif(N,min=1e6,max=2.5e8) # m2
+N=length(SAs)
+set.seed(1)
+
+### impose range from 2007 isotope-based estimates (Brooks et al. 2014)
+NLAiso=read.csv("nla2007_isotopes_wide.csv",header=TRUE)
+NLAiso$RT=NLAiso$RT*365  # days
+NLAiso=NLAiso[NLAiso$RT>0,] # remove 5 with RT=0
+
+hist(NLAiso$RT,breaks=seq(0,60000,10),xlab="RT (days)")
+hist(log10(NLAiso$RT),breaks=seq(0,5,0.1),xlab="log10(RT) (days)")
+
+HRTs=10^rnorm(N,mean=mean(log10(NLAiso$RT)),sd=sd(log10(NLAiso$RT))) # days
+hist(log10(HRTs),breaks=seq(0,5,0.1))
+
+Qins=SAs*Zs/HRTs  #m3 day-1; assuming (wrong) that NLA lakes are shaped like model lakes...
+
+# use TP in U.S. streams for Pin distribution
+EPAstream=read.csv("nrsa1314_widechem_04232019.csv",header=TRUE)
+EPAstream=EPAstream[EPAstream$PTL_RESULT>0,]   # remove 5 measures that equal 0
+hist(log10(EPAstream$PTL_RESULT),breaks=seq(-1,5,0.1))
+
+Pins=10^rnorm(N,mean=mean(log10(EPAstream$PTL_RESULT)),sd=sd(log10(EPAstream$PTL_RESULT)))
+hist(log10(Pins),breaks=seq(-1,5,0.1))
+Pins=Pins/1000 # g m-3
+#Pins=runif(N,min=0.01,max=0.5) # g m-3
 
 NLAsim_output=data.frame(Qin=Qins,Pin=Pins,Z=Zs,SA=SAs,TP=NA,biomass=NA)
 
@@ -329,15 +468,33 @@ for(i in 1:length(Qins)){
   print(i)
   pars=c(kbg=0, kc=0.42, ka=0.22, I0=600, zmax=Zs[i], Cin=0, d=0.01, pa=1, ha=80,
          ma=0.003, la=0.1, r=0.6478685, Pin=Pins[i], apmax=0.1745694, b=0.003058574, 
-         Al=SAs[i], zsed=0.01, Qin=Qins[i], a=-1, c=10, Cp=0.015)
-  out=ode(y=x0,times=times,func=Model,parms=pars)
+         Al=SAs[i], zsed=0.01, Qin=Qins[i], a=-1, c=10, Cp=0.015, g=0)
+  out=ode(y=x0,times=times,func=ModelG,parms=pars)
   NLAsim_output$TP[i]=(out[nrow(out),4]+out[nrow(out),6])*1000/out[nrow(out),7] # mg P  m-3
   NLAsim_output$biomass[i]=out[nrow(out),3]/out[nrow(out),7] # g C m-3
 }
 NLAsim_output$chl=NLAsim_output$biomass/60*1000  # mg chl m-3
 
-##adding DOC
-DOCs=runif(N, min=0, max=30)
+######### + grazing - fixed; g=0.15
+NLAsim_output.gf=data.frame(Qin=Qins,Pin=Pins,Z=Zs,SA=SAs,TP=NA,biomass=NA)
+
+for(i in 1:length(Qins)){
+  print(i)
+  pars=c(kbg=0, kc=0.42, ka=0.22, I0=600, zmax=Zs[i], Cin=0, d=0.01, pa=1, ha=80,
+         ma=0.003, la=0.1, r=0.6478685, Pin=Pins[i], apmax=0.1745694, b=0.003058574, 
+         Al=SAs[i], zsed=0.01, Qin=Qins[i], a=-1, c=10, Cp=0.015, g=0.15)
+  out=ode(y=x0,times=times,func=ModelG,parms=pars)
+  NLAsim_output.gf$TP[i]=(out[nrow(out),4]+out[nrow(out),6])*1000/out[nrow(out),7] # mg P  m-3
+  NLAsim_output.gf$biomass[i]=out[nrow(out),3]/out[nrow(out),7] # g C m-3
+}
+NLAsim_output.gf$chl=NLAsim_output.gf$biomass/60*1000  # mg chl m-3
+
+######## adding DOC - again using DOC from US streams; no grazing
+hist(log10(EPAstream$DOC_RESULT),breaks=seq(-1,2,0.1))
+
+DOCs=10^rnorm(N,mean=mean(log10(EPAstream$DOC_RESULT)),sd=sd(log10(EPAstream$DOC_RESULT)))
+hist(log10(DOCs),breaks=seq(-1,2,0.1))
+#DOCs=runif(N, min=0, max=30)
 
 NLAsim_output.d=data.frame(Qin=Qins,Pin=Pins,Z=Zs,SA=SAs,DOC=DOCs,TP=NA,biomass=NA, docLake=NA, lightlim=NA)
 
@@ -345,8 +502,8 @@ for(i in 1:length(Qins)){
   print(i)
   pars=c(kbg=0, kc=0.42, ka=0.22, I0=600, zmax=Zs[i], Cin=DOCs[i], d=0.01, pa=1, ha=80,
          ma=0.003, la=0.1, r=0.6478685, Pin=Pins[i], apmax=0.1745694, b=0.003058574, 
-         Al=SAs[i], zsed=0.01, Qin=Qins[i], a=-1, c=10, Cp=0.015)
-  out=ode(y=x0,times=times,func=Model,parms=pars)
+         Al=SAs[i], zsed=0.01, Qin=Qins[i], a=-1, c=10, Cp=0.015, g=0)
+  out=ode(y=x0,times=times,func=ModelG,parms=pars)
   NLAsim_output.d$TP[i]=(out[nrow(out),4]+out[nrow(out),6])*1000/out[nrow(out),7] # mg P  m-3
   NLAsim_output.d$biomass[i]=out[nrow(out),3]/out[nrow(out),7] # g C m-3
   NLAsim_output.d$docLake[i]=out[nrow(out),2]/out[nrow(out),7] # g C m-3
@@ -354,8 +511,27 @@ for(i in 1:length(Qins)){
 }
 NLAsim_output.d$chl=NLAsim_output.d$biomass/60*1000  # mg chl m-3
 
+
+######### + grazing - fixed & DOC
+NLAsim_output.dgf=data.frame(Qin=Qins,Pin=Pins,Z=Zs,SA=SAs,DOC=DOCs,TP=NA,biomass=NA, docLake=NA, lightlim=NA)
+
+for(i in 1:length(Qins)){
+  print(i)
+  pars=c(kbg=0, kc=0.42, ka=0.22, I0=600, zmax=Zs[i], Cin=DOCs[i], d=0.01, pa=1, ha=80,
+         ma=0.003, la=0.1, r=0.6478685, Pin=Pins[i], apmax=0.1745694, b=0.003058574, 
+         Al=SAs[i], zsed=0.01, Qin=Qins[i], a=-1, c=10, Cp=0.015, g=0.15)
+  out=ode(y=x0,times=times,func=ModelG,parms=pars)
+  NLAsim_output.dgf$TP[i]=(out[nrow(out),4]+out[nrow(out),6])*1000/out[nrow(out),7] # mg P  m-3
+  NLAsim_output.dgf$biomass[i]=out[nrow(out),3]/out[nrow(out),7] # g C m-3
+  NLAsim_output.dgf$docLake[i]=out[nrow(out),2]/out[nrow(out),7] # g C m-3
+  NLAsim_output.dgf$lightlim[i]=out[nrow(out), 8]
+}
+NLAsim_output.dgf$chl=NLAsim_output.dgf$biomass/60*1000  # mg chl m-3
+
+
 ########### write workspace image with simulations output
-save.image(file="smodel.RData")
+#save.image(file="smodel.RData")
+
 
 
 
