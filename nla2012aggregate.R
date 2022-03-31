@@ -21,11 +21,6 @@ unique(kv$CHLX_UNITS)
 range(chla$CHLX_RESULT,na.rm=TRUE)
 unique(chla$CHLX_UNITS)
 
-range(phab$DEPTH_AT_STATION,na.rm=TRUE)
-unique(phab$DEPTH_UNIT)
-
-NLAdepth=phab$DEPTH_AT_STATION
-NLAdepth[phab$DEPTH_UNIT=="ft"]=phab$DEPTH_AT_STATION[phab$DEPTH_UNIT=="ft"]*0.3048
 
 sites=unique(kv$SITE_ID)
 
@@ -43,3 +38,25 @@ for(i in 1:nrow(nla)){
 }
 
 write.csv(nla,"nla2012aggregated_2022-03-29.csv",row.names=FALSE)
+
+
+###### also generating file with data from NLA 2007 and NSRA 2013-14 used for distributions of forcings for NLA model comparison
+NLAiso=read.csv("nla2007_isotopes_wide.csv",header=TRUE)
+NLAiso$RT=NLAiso$RT*365  # days
+NLAiso=NLAiso[NLAiso$RT>0,] # remove 5 with RT=0
+
+NLAforcingDistributions=data.frame(origin=rep("nla2007_isotopes",nrow(NLAiso)),quantity=rep("RT_days",nrow(NLAiso)),value=NLAiso$RT)
+
+EPAstream=read.csv("nrsa1314_widechem_04232019.csv",header=TRUE)
+EPAstream=EPAstream[EPAstream$PTL_RESULT>0,]   # remove 5 measures that equal 0
+
+NLAforcingDistributions=rbind(NLAforcingDistributions,data.frame(origin=rep("nrsa1314_chem",nrow(EPAstream)),
+                                                                 quantity=rep("PTL_mgPm3",nrow(EPAstream)),
+                                                                 value=EPAstream$PTL_RESULT))
+
+NLAforcingDistributions=rbind(NLAforcingDistributions,data.frame(origin=rep("nrsa1314_chem",nrow(EPAstream)),
+                                                                 quantity=rep("DOC_gCm3",nrow(EPAstream)),
+                                                                 value=EPAstream$DOC_RESULT))
+                              
+
+write.csv(NLAforcingDistributions,"NLAfforcingDistributions.csv",row.names=FALSE)

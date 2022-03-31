@@ -440,27 +440,26 @@ N=length(SAs)
 set.seed(1)
 
 ### impose range from 2007 isotope-based estimates (Brooks et al. 2014)
-NLAiso=read.csv("nla2007_isotopes_wide.csv",header=TRUE)
-NLAiso$RT=NLAiso$RT*365  # days
-NLAiso=NLAiso[NLAiso$RT>0,] # remove 5 with RT=0
+forcingDists=read.csv("NLAfforcingDistributions.csv",header=TRUE)
 
-hist(NLAiso$RT,breaks=seq(0,60000,10),xlab="RT (days)")
-hist(log10(NLAiso$RT),breaks=seq(0,5,0.1),xlab="log10(RT) (days)")
+NLAiso=forcingDists[forcingDists$quantity=="RT_days",]
+  
+hist(NLAiso$value,breaks=seq(0,60000,10),xlab="RT (days)")
+hist(log10(NLAiso$value),breaks=seq(0,5,0.1),xlab="log10(RT) (days)")
 
-HRTs=10^rnorm(N,mean=mean(log10(NLAiso$RT)),sd=sd(log10(NLAiso$RT))) # days
+HRTs=10^rnorm(N,mean=mean(log10(NLAiso$valuue)),sd=sd(log10(NLAiso$value))) # days
 hist(log10(HRTs),breaks=seq(0,5,0.1))
 
 Qins=SAs*Zs/HRTs  #m3 day-1; assuming (wrong) that NLA lakes are shaped like model lakes...
 
 # use TP in U.S. streams for Pin distribution
-EPAstream=read.csv("nrsa1314_widechem_04232019.csv",header=TRUE)
-EPAstream=EPAstream[EPAstream$PTL_RESULT>0,]   # remove 5 measures that equal 0
-hist(log10(EPAstream$PTL_RESULT),breaks=seq(-1,5,0.1))
+EPAstreamTP=forcingDists[forcingDists$quantity=="PTL_mgPm3",]
+  
+hist(log10(EPAstreamTP$value),breaks=seq(-1,5,0.1))
 
-Pins=10^rnorm(N,mean=mean(log10(EPAstream$PTL_RESULT)),sd=sd(log10(EPAstream$PTL_RESULT)))
+Pins=10^rnorm(N,mean=mean(log10(EPAstreamTP$value)),sd=sd(log10(EPAstreamTP$value)))
 hist(log10(Pins),breaks=seq(-1,5,0.1))
 Pins=Pins/1000 # g m-3
-#Pins=runif(N,min=0.01,max=0.5) # g m-3
 
 NLAsim_output=data.frame(Qin=Qins,Pin=Pins,Z=Zs,SA=SAs,TP=NA,biomass=NA)
 
@@ -490,11 +489,11 @@ for(i in 1:length(Qins)){
 NLAsim_output.gf$chl=NLAsim_output.gf$biomass/60*1000  # mg chl m-3
 
 ######## adding DOC - again using DOC from US streams; no grazing
-hist(log10(EPAstream$DOC_RESULT),breaks=seq(-1,2,0.1))
+EPAstreamDOC=forcingDists[forcingDists$quantity=="DOC_gCm3",]
+hist(log10(EPAstreamDOC$value),breaks=seq(-1,2,0.1))
 
-DOCs=10^rnorm(N,mean=mean(log10(EPAstream$DOC_RESULT)),sd=sd(log10(EPAstream$DOC_RESULT)))
+DOCs=10^rnorm(N,mean=mean(log10(EPAstreamDOC$value)),sd=sd(log10(EPAstreamDOC$value)))
 hist(log10(DOCs),breaks=seq(-1,2,0.1))
-#DOCs=runif(N, min=0, max=30)
 
 NLAsim_output.d=data.frame(Qin=Qins,Pin=Pins,Z=Zs,SA=SAs,DOC=DOCs,TP=NA,biomass=NA, docLake=NA, lightlim=NA)
 
